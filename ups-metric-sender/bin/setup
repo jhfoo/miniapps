@@ -1,0 +1,35 @@
+#!/bin/bash
+PYTHON=python3
+
+INCREMENTAL_BUILD=0
+
+start_time=$SECONDS
+
+for arg in "$@"; do
+  case $arg in
+    -i|--inc)
+      INCREMENTAL_BUILD=1
+      echo "- Incremental build enabled."
+      ;;
+    *)
+      # Handle non-option arguments here
+      echo "Found a non-option argument: $arg"
+      ;;
+  esac
+done
+
+if [ $INCREMENTAL_BUILD -eq 0 ]; then
+  echo "- Removing existing venv"
+  rm -rf venv
+
+  echo "- Creating new venv"
+  $PYTHON -m venv venv
+fi
+
+echo "- Installing requirements"
+venv/bin/pip3 install -r conf/requirements.txt
+
+end_time=$SECONDS
+elapsed_time=$((end_time - start_time))
+
+echo "Time taken: $elapsed_time seconds"

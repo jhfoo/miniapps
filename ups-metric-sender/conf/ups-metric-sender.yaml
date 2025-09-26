@@ -1,0 +1,4 @@
+api:
+  host: hansel.kungfoo.local
+  port: 8000
+  protocol: http
